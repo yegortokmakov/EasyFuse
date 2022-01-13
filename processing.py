@@ -81,7 +81,7 @@ class Processing(object):
             modelling_string = ""
             if cfg.other_files["easyfuse_model"]:
                 modelling_string = " --model_predictions"
-            cmd_summarize = "python {0} --input {1}{2}".format(os.path.join(cfg.module_dir, "summarize_data.py"), self.working_dir, modelling_string)
+            cmd_summarize = "python {0} --input {1}{2}".format(cfg.commands["summarize"], self.working_dir, modelling_string)
             self.logger.debug("Submitting slurm job: CMD - {0}; PATH - {1}; DEPS - {2}".format(cmd_summarize, self.working_dir, dependency))
             cpu = cfg.resources["summary"]["cpu"]
             mem = cfg.resources["summary"]["mem"]
@@ -168,8 +168,8 @@ class Processing(object):
         # urla: mapsplice requires gunzip'd read files and process substitutions don't seem to work in slurm scripts...
         #       process substitution do somehow not work from this script - c/p the command line to the terminal, however, works w/o issues?!
         cmd_fastqc = "{0} --nogroup --extract -t 6 -o {1} {2} {3}".format(cmds["fastqc"], qc_path, fq1, fq2)
-        cmd_qc_parser = "{0} -i {1} {2} -o {3}".format(os.path.join(module_dir, "misc", "qc_parser.py"), fastqc_1, fastqc_2, qc_table_path)
-        cmd_skewer = "{0} -q {1} -i {2} {3} -o {4}".format(os.path.join(module_dir, "tool_wrapper", "skewer_wrapper.py"), qc_table_path, fq1, fq2, skewer_path)
+        cmd_qc_parser = "{0} -i {1} {2} -o {3}".format(cmds["qc_parser"], fastqc_1, fastqc_2, qc_table_path)
+        cmd_skewer = "{0} -q {1} -i {2} {3} -o {4}".format(cmds["skewer_wrapper"], qc_table_path, fq1, fq2, skewer_path)
 
         fq0 = ""
         if "QC" in tools:
@@ -181,7 +181,7 @@ class Processing(object):
 
         # (0) Readfilter
         cmd_star_filter = "{0} --genomeDir {1} --outFileNamePrefix {2}_ --readFilesCommand zcat --readFilesIn {3} {4} --outFilterMultimapNmax 100 --outSAMmultNmax 1 --chimSegmentMin 10 --chimJunctionOverhangMin 10 --alignSJDBoverhangMin 10 --alignMatesGapMax {5} --alignIntronMax {5} --chimSegmentReadGapMax 3 --alignSJstitchMismatchNmax 5 -1 5 5 --seedSearchStartLmax 20 --winAnchorMultimapNmax 50 --outSAMtype BAM Unsorted --chimOutType Junctions WithinBAM --outSAMunmapped Within KeepPairs --runThreadN waiting_for_cpu_number".format(cmds["star"], star_index_path, os.path.join(filtered_reads_path, sample_id), fq1, fq2, cfg.max_dist_proper_pair)
-        cmd_read_filter = "{0} --input {1}_Aligned.out.bam --output {1}_Aligned.out.filtered.bam".format(os.path.join(module_dir, "fusionreadfilter.py"), os.path.join(filtered_reads_path, sample_id))
+        cmd_read_filter = "{0} --input {1}_Aligned.out.bam --output {1}_Aligned.out.filtered.bam".format(cmds["fusionreadfilter"], os.path.join(filtered_reads_path, sample_id))
         # re-define fastq's if filtering is on (default)
         fq0 = ""
         if "Readfilter" in tools:
@@ -213,14 +213,14 @@ class Processing(object):
         # (8) Infusion
         cmd_infusion = "{0} -1 {1} -2 {2} --skip-finished --min-unique-alignment-rate 0 --min-unique-split-reads 0 --allow-non-coding --out-dir {3} {4}".format(cmds["infusion"], fq1, fq2, infusion_path, infusion_cfg_path)
         # (x) Soapfuse
-        cmd_soapfuse = "{0} -q {1} -i {2} -o {3}".format(os.path.join(module_dir, "tool_wrapper", "soapfuse_wrapper.py"), qc_table_path, " ".join([fq1, fq2]), soapfuse_path)
+        cmd_soapfuse = "{0} -q {1} -i {2} -o {3}".format(cmds["soapfuse_wrapper"], qc_table_path, " ".join([fq1, fq2]), soapfuse_path)
         # (9) Data collection
-        cmd_fetchdata = "{0} -i {1} -o {2} -s {3} --fq1 {4} --fq2 {5} --fusion_support {6}".format(os.path.join(module_dir, "fetchdata.py"), output_results_path, fetchdata_path, sample_id, fq1, fq2, tool_num_cutoff)
+        cmd_fetchdata = "{0} -i {1} -o {2} -s {3} --fq1 {4} --fq2 {5} --fusion_support {6}".format(cmds["fetchdata"], output_results_path, fetchdata_path, sample_id, fq1, fq2, tool_num_cutoff)
         # (10) De novo assembly of fusion transcripts
         # urla: This is currently still under active development and has not been tested thoroughly
 #        cmd_denovoassembly = "{0} -i waiting_for_gene_list_input -b {1}_Aligned.out.bam -g {2} -t {3} -o waiting_for_assembly_out_dir".format(os.path.join(module_dir, "denovoassembly.py"), os.path.join(filtered_reads_path, sample_id), ref_genome, ref_trans)
         # (X) Sample monitoring
-        cmd_samples = "{0} --db_path={1} --sample_id={2} --action=append_state --tool=".format(os.path.join(module_dir, "misc", "samples.py"), self.samples.db_path, sample_id)
+        cmd_samples = "{0} --db_path={1} --sample_id={2} --action=append_state --tool=".format(cmds["samples"], self.samples.db_path, sample_id)
 
         # set final lists of executable tools and path
         exe_tools = [

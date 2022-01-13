@@ -151,7 +151,6 @@ def _submit_slurm(job_name, cmd, cores, mem_usage, output_results_folder, depend
             "#SBATCH --account {}\n".format(userid),
             "#SBATCH --kill-on-invalid-dep=yes\n",
             "#SBATCH --cpus-per-task={}\n".format(cores),
-            "#SBATCH --mem={}G\n".format(mem_usage),
             "#SBATCH --time={}\n".format(timelimit),
             depend,
             "#SBATCH -D {}\n".format(output_results_folder),
@@ -160,7 +159,6 @@ def _submit_slurm(job_name, cmd, cores, mem_usage, output_results_folder, depend
             mail_type,
             mail_user,
             "set -eo pipefail -o nounset\n",
-	    ". {}\n".format(module_file) if module_file else "\n",
             "srun echo \"$(date) Slurm job started.\" > {0}.runtime && {1} && echo \"$(date) Slurm job finished.\" >> {0}.runtime\n".format(job_name, cmd)
         ])
     # and run it
