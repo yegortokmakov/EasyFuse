@@ -58,7 +58,7 @@ resources = {
         "mem": 10
     },
     "readfilter": {
-        "cpu": 16,
+        "cpu": 8,
         "mem": 50
     },
     "star": {
@@ -74,7 +74,7 @@ resources = {
         "mem": 30
     },
     "fusioncatcher": {
-        "cpu": 32,
+        "cpu": 16,
         "mem": 30
     },
     "starfusion": {
@@ -82,15 +82,15 @@ resources = {
         "mem": 30
     },
     "starchip": {
-        "cpu": 32,
+        "cpu": 16,
         "mem": 30
     },
     "infusion": {
-        "cpu": 16,
+        "cpu": 32,
         "mem": 30
     },
     "soapfuse": {
-        "cpu": 16,
+        "cpu": 32,
         "mem": 20
     },
     "classification": {
@@ -98,7 +98,7 @@ resources = {
         "mem": 16
     },
     "fetchdata": {
-        "cpu": 32,
+        "cpu": 16,
         "mem": 50
     },
     "summary": {
@@ -116,7 +116,7 @@ commands = {
     "fusioncatcher": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/shared-fsx,destination=/shared-fsx load/library/easyfuse134 /code/fusioncatcher/1.0/bin/fusioncatcher",
     "starfusion": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/shared-fsx,destination=/shared-fsx load/library/easyfuse134 STAR-Fusion",
     "infusion": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/shared-fsx,destination=/shared-fsx load/library/easyfuse134 /code/InFusion-0.8/infusion",
-    "soapfuse": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/shared-fsx,destination=/shared-fsx load/library/easyfuse134 /code/SOAPfuse/1.27/SOAPfuse-RUN.pl",
+    "soapfuse": "/code/SOAPfuse/1.27/SOAPfuse-RUN.pl", #this is taken from the docker image so it doesn't matter
     # for processing and fetch data
     "star": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/shared-fsx,destination=/shared-fsx load/library/easyfuse134 /code/STAR-2.6.1d/bin/Linux_x86_64/STAR",
     "samtools": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/shared-fsx,destination=/shared-fsx load/library/easyfuse134 samtools",
@@ -125,10 +125,10 @@ commands = {
     # supporting easyfuse scripts
     "qc_parser": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/shared-fsx,destination=/shared-fsx load/library/easyfuse134 /code/easyfuse-1.3.4/misc/qc_parser.py",
     "skewer_wrapper": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/shared-fsx,destination=/shared-fsx load/library/easyfuse134 /code/easyfuse-1.3.4/tool_wrapper/skewer_wrapper.py",
-    "soapfuse_wrapper": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/shared-fsx,destination=/shared-fsx load/library/easyfuse134 /code/easyfuse-1.3.4/tool_wrapper/soapfuse_wrapper.py",
+    "soapfuse_wrapper": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/shared-fsx/easyfude_ref/soapfuse.cfg,destination=/ref/soapfuse.cfg --mount=type=bind,source=/shared-fsx,destination=/shared-fsx load/library/easyfuse134 /code/easyfuse-1.3.4/tool_wrapper/soapfuse_wrapper.py",
     "summarize": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/shared-fsx,destination=/shared-fsx load/library/easyfuse134 /code/easyfuse-1.3.4/summarize_data.py",
     "fusionreadfilter": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/shared-fsx,destination=/shared-fsx load/library/easyfuse134 /code/easyfuse-1.3.4/fusionreadfilter.py",
-    "fetchdata": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/shared-fsx,destination=/shared-fsx load/library/easyfuse134 /code/easyfuse-1.3.4/fetchdata.py",
+    "fetchdata": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/shared-fsx/easyfude_ref/Homo_sapiens.GRCh38.86.gff3.db,destination=/ref/Homo_sapiens.GRCh38.86.gff3.db --mount=type=bind,source=/shared-fsx/easyfude_ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa,destination=/ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa --mount=type=bind,source=/shared-fsx/easyfude_ref/Homo_sapiens.GRCh38.86.gtf.tsl,destination=/ref/Homo_sapiens.GRCh38.86.gtf.tsl --mount=type=bind,source=/shared-fsx,destination=/shared-fsx load/library/easyfuse134 /code/easyfuse-1.3.4/fetchdata.py",
     "samples": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/shared-fsx,destination=/shared-fsx load/library/easyfuse134 /code/easyfuse-1.3.4/misc/samples.py"
 }
 # full path to reference files
