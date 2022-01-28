@@ -1,13 +1,18 @@
 #!/usr/bin/env python
+
 import getpass
 import os
+
 # Required user input:
 # 1) Which fusion prediction tools should be executed (tools)
 # 2) Which post-processing steps should be executed (fd_tools)
 # 3) Which reference data shall be used (ref_trans_version & ref_genome_build)
 # 4) To whom shall slurm mails be sent to (receiver)
+
 version = "1.3.4"
+
 pipeline_name = "EasyFuse"
+
 #tools=Readfilter,Mapsplice,Fusioncatcher,Star,Starfusion,Infusion,Fetchdata,Summary
 tools = ("QC",
          "Readfilter",
@@ -19,11 +24,13 @@ tools = ("QC",
          "Soapfuse",
          "Fetchdata",
          "Summary")
+
 fusiontools = ("Fusioncatcher",
                "Starfusion",
                "Infusion",
                "Mapsplice",
                "Soapfuse")
+
 #fd_tools=Fusiongrep,Contextseq,Starindex,Staralign,Bamindex,Requantify
 fd_tools = ("Fusiongrep",
             "Contextseq",
@@ -33,6 +40,7 @@ fd_tools = ("Fusiongrep",
             "StaralignBest",
             "BamindexBest",
             "RequantifyBest")
+
 sender = "sender@mail.com"
 receiver = "yegor@amazon.com"
 min_read_len_perc = 0.75
@@ -51,6 +59,7 @@ user = getpass.getuser()
 module_dir = os.path.dirname(os.path.realpath(__file__))
 #logfile=/data/urla_progs/TronData/ngs_pipelines/easyfuse/fusion.log
 #fusion_db=/data/urla_progs/TronData/ngs_pipelines/easyfuse/fusion.db
+
 # Define ressource usage (cpu (number of threads), mem (ram in Gb)):
 resources = {
     "qc": {
@@ -106,30 +115,31 @@ resources = {
         "mem": 16
     }
 }
+
 # execution command for individual programs (what you write here should be identical to what is typed in the console)
 commands = {
     # for qc
-    "fastqc": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/FastQC/fastqc",
-    "skewer": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/skewer-0.2.2/skewer",
+    "fastqc": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/FastQC/fastqc",
+    "skewer": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/skewer-0.2.2/skewer",
     # for processing
-    "mapsplice": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 mapsplice.py",
-    "fusioncatcher": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/fusioncatcher/1.0/bin/fusioncatcher",
-    "starfusion": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 STAR-Fusion",
-    "infusion": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/InFusion-0.8/infusion",
+    "mapsplice": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 mapsplice.py",
+    "fusioncatcher": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/fusioncatcher/1.0/bin/fusioncatcher",
+    "starfusion": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 STAR-Fusion",
+    "infusion": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/InFusion-0.8/infusion",
     "soapfuse": "/code/SOAPfuse/1.27/SOAPfuse-RUN.pl", #this is taken from the docker image so it doesn't matter
     # for processing and fetch data
-    "star": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/STAR-2.6.1d/bin/Linux_x86_64/STAR",
-    "samtools": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 samtools",
+    "star": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/STAR-2.6.1d/bin/Linux_x86_64/STAR",
+    "samtools": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 samtools",
     # for liftover
-    "crossmap": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 test",
+    "crossmap": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 test",
     # supporting easyfuse scripts
-    "qc_parser": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/misc/qc_parser.py",
-    "skewer_wrapper": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/tool_wrapper/skewer_wrapper.py",
-    "soapfuse_wrapper": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx/ref/soapfuse.cfg,destination=/ref/soapfuse.cfg --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/tool_wrapper/soapfuse_wrapper.py",
-    "summarize": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/summarize_data.py",
-    "fusionreadfilter": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/fusionreadfilter.py",
-    "fetchdata": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx/ref/Homo_sapiens.GRCh38.86.gff3.db,destination=/ref/Homo_sapiens.GRCh38.86.gff3.db --mount=type=bind,source=/fsx/ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa,destination=/ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa --mount=type=bind,source=/fsx/ref/Homo_sapiens.GRCh38.86.gtf.tsl,destination=/ref/Homo_sapiens.GRCh38.86.gtf.tsl --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/fetchdata.py",
-    "samples": "/home/sarus/1.4.0-Release/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/misc/samples.py"
+    "qc_parser": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/misc/qc_parser.py",
+    "skewer_wrapper": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/tool_wrapper/skewer_wrapper.py",
+    "soapfuse_wrapper": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx/ref/soapfuse.cfg,destination=/ref/soapfuse.cfg --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/tool_wrapper/soapfuse_wrapper.py",
+    "summarize": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/summarize_data.py",
+    "fusionreadfilter": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/fusionreadfilter.py",
+    "fetchdata": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx/ref/Homo_sapiens.GRCh38.86.gff3.db,destination=/ref/Homo_sapiens.GRCh38.86.gff3.db --mount=type=bind,source=/fsx/ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa,destination=/ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa --mount=type=bind,source=/fsx/ref/Homo_sapiens.GRCh38.86.gtf.tsl,destination=/ref/Homo_sapiens.GRCh38.86.gtf.tsl --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/fetchdata.py",
+    "samples": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/misc/samples.py"
 }
 # full path to reference files
 references = {
