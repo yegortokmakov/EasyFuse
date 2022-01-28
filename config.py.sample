@@ -129,9 +129,17 @@ commands = {
     "soapfuse": "/path/to/SOAPfuse-RUN.pl",
     # for processing and fetch data
     "star": "/path/to/star_bin",
-    "samtools": "/path/to/samtools_bin"
+    "samtools": "/path/to/samtools_bin",
     # for liftover
     #"crossmap": "test"
+    # supporting easyfuse scripts
+    "qc_parser": "/code/easyfuse-1.3.4/misc/qc_parser.py",
+    "skewer_wrapper": "/code/easyfuse-1.3.4/tool_wrapper/skewer_wrapper.py",
+    "soapfuse_wrapper": "/code/easyfuse-1.3.4/tool_wrapper/soapfuse_wrapper.py",
+    "summarize": "/code/easyfuse-1.3.4/summarize_data.py",
+    "fusionreadfilter": "/code/easyfuse-1.3.4/fusionreadfilter.py",
+    "fetchdata": "/code/easyfuse-1.3.4/fetchdata.py",
+    "samples": "/code/easyfuse-1.3.4/misc/samples.py"
 }
 
 # full path to reference files
