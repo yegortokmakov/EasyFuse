@@ -119,27 +119,27 @@ resources = {
 # execution command for individual programs (what you write here should be identical to what is typed in the console)
 commands = {
     # for qc
-    "fastqc": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/FastQC/fastqc",
-    "skewer": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/skewer-0.2.2/skewer",
+    "fastqc": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 /code/FastQC/fastqc",
+    "skewer": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 /code/skewer-0.2.2/skewer",
     # for processing
-    "mapsplice": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 mapsplice.py",
-    "fusioncatcher": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/fusioncatcher/1.0/bin/fusioncatcher",
-    "starfusion": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 STAR-Fusion",
-    "infusion": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/InFusion-0.8/infusion",
+    "mapsplice": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 mapsplice.py",
+    "fusioncatcher": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 /code/fusioncatcher/1.0/bin/fusioncatcher",
+    "starfusion": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 STAR-Fusion",
+    "infusion": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 /code/InFusion-0.8/infusion",
     "soapfuse": "/code/SOAPfuse/1.27/SOAPfuse-RUN.pl", #this is taken from the docker image so it doesn't matter
     # for processing and fetch data
-    "star": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/STAR-2.6.1d/bin/Linux_x86_64/STAR",
-    "samtools": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 samtools",
+    "star": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 /code/STAR-2.6.1d/bin/Linux_x86_64/STAR",
+    "samtools": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 samtools",
     # for liftover
-    "crossmap": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 test",
+    "crossmap": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 test",
     # supporting easyfuse scripts
-    "qc_parser": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/misc/qc_parser.py",
-    "skewer_wrapper": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/tool_wrapper/skewer_wrapper.py",
-    "soapfuse_wrapper": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx/ref/soapfuse.cfg,destination=/ref/soapfuse.cfg --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/tool_wrapper/soapfuse_wrapper.py",
-    "summarize": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/summarize_data.py",
-    "fusionreadfilter": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/fusionreadfilter.py",
-    "fetchdata": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx/ref/Homo_sapiens.GRCh38.86.gff3.db,destination=/ref/Homo_sapiens.GRCh38.86.gff3.db --mount=type=bind,source=/fsx/ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa,destination=/ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa --mount=type=bind,source=/fsx/ref/Homo_sapiens.GRCh38.86.gtf.tsl,destination=/ref/Homo_sapiens.GRCh38.86.gtf.tsl --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/fetchdata.py",
-    "samples": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx load/library/easyfuse134 /code/easyfuse-1.3.4/misc/samples.py"
+    "qc_parser": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 /code/easyfuse-1.3.4/misc/qc_parser.py",
+    "skewer_wrapper": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 /code/easyfuse-1.3.4/tool_wrapper/skewer_wrapper.py",
+    "soapfuse_wrapper": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx/ref/soapfuse.cfg,destination=/ref/soapfuse.cfg --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 /code/easyfuse-1.3.4/tool_wrapper/soapfuse_wrapper.py",
+    "summarize": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 /code/easyfuse-1.3.4/summarize_data.py",
+    "fusionreadfilter": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 /code/easyfuse-1.3.4/fusionreadfilter.py",
+    "fetchdata": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx/ref/Homo_sapiens.GRCh38.86.gff3.db,destination=/ref/Homo_sapiens.GRCh38.86.gff3.db --mount=type=bind,source=/fsx/ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa,destination=/ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa --mount=type=bind,source=/fsx/ref/Homo_sapiens.GRCh38.86.gtf.tsl,destination=/ref/Homo_sapiens.GRCh38.86.gtf.tsl --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 /code/easyfuse-1.3.4/fetchdata.py",
+    "samples": "/home/sarus/bin/sarus run --mount=type=bind,source=/fsx,destination=/fsx tronbioinformatics/easyfuse:1.3.4 /code/easyfuse-1.3.4/misc/samples.py"
 }
 # full path to reference files
 references = {
